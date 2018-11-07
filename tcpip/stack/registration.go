@@ -339,7 +339,7 @@ func RegisterNetworkProtocolFactory(name string, p NetworkProtocolFactory) {
 	networkProtocols[name] = p
 }
 
-// RegisterLinkEndpoint register a link-layer protocol endpoint and returns an
+// RegisterLinkEndpoint registers a link-layer protocol endpoint and returns an
 // ID that can be used to refer to it.
 func RegisterLinkEndpoint(linkEP LinkEndpoint) tcpip.LinkEndpointID {
 	linkEPMu.Lock()
@@ -351,6 +351,14 @@ func RegisterLinkEndpoint(linkEP LinkEndpoint) tcpip.LinkEndpointID {
 	linkEndpoints[v] = linkEP
 
 	return v
+}
+
+// DeregisterLinkEndpoint deregisters a link-layer protocol endpoint ID
+func DeregisterLinkEndpoint(id tcpip.LinkEndpointID) {
+	linkEPMu.Lock()
+	defer linkEPMu.Unlock()
+
+	delete(linkEndpoints, id)
 }
 
 // FindLinkEndpoint finds the link endpoint associated with the given ID.
