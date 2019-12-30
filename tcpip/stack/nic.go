@@ -370,7 +370,7 @@ func (n *NIC) RemoveAddress(addr tcpip.Address) *tcpip.Error {
 	r.holdsInsertRef = false
 	n.mu.Unlock()
 
-	r.decRef()
+	n.removeEndpoint(r)
 
 	return nil
 }
